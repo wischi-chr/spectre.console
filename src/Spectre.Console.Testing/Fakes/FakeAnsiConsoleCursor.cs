@@ -1,6 +1,6 @@
 namespace Spectre.Console.Testing
 {
-    public sealed class FakeAnsiConsoleCursor : IAnsiConsoleCursor
+    public sealed class FakeAnsiConsoleCursor : IConsoleCursor
     {
         public void Move(CursorDirection direction, int steps)
         {

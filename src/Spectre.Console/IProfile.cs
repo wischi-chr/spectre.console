@@ -1,12 +1,12 @@
-﻿using System;
 using System.IO;
+using Spectre.Console.Rendering;
 
 namespace Spectre.Console
 {
     /// <summary>
     /// Represents the interface to a console.
     /// </summary>
-    public interface IProfile
+    public interface IConsoleBackend
     {
         /// <summary>
         /// Gets the capabilities of the console.
@@ -14,16 +14,53 @@ namespace Spectre.Console
         ICapabilities Capabilities { get; }
 
         /// <summary>
-        /// Gets the standard output text writer.
+        /// Gets the console cursor for the backend.
         /// </summary>
-        TextWriter StandardOutput { get; }
+        IConsoleCursor Cursor { get; }
 
         /// <summary>
-        /// Obtains the next character or function key pressed by the user. The pressed key is optionally displayed in the console window.
+        /// Gets the console's output mechanism.
         /// </summary>
-        /// <param name="intercept">Determines whether to display the pressed key in the console window. true to not display the pressed key; otherwise, false.</param>
-        /// <returns>An object that describes the ConsoleKey constant and Unicode character, if any, that correspond to the pressed console key.</returns>
-        ConsoleKeyInfo ReadKey(bool intercept);
+        IConsoleOutput Output { get; }
+
+        /// <summary>
+        /// Gets the console's input mechanism.
+        /// </summary>
+        IConsoleInput Input { get; }
+    }
+
+    /// <summary>
+    /// Represents the console's input mechanism.
+    /// </summary>
+    public interface IConsoleOutput
+    {
+        /// <summary>
+        /// Clears the console.
+        /// </summary>
+        /// <param name="home">If the cursor should be moved to the home position.</param>
+        void Clear(bool home);
+
+        /// <summary>
+        /// Writes a segment to the console.
+        /// </summary>
+        /// <param name="segment">The segment that is written.</param>
+        void Write(Segment segment);
+
+        /// <summary>
+        /// Flushes the output buffer.
+        /// </summary>
+        void Flush();
+    }
+
+    /// <summary>
+    /// Represents the console's window mechanism.
+    /// </summary>
+    public interface IConsoleWindow
+    {
+        /// <summary>
+        /// Gets or sets the window title.
+        /// </summary>
+        string Title { get; set; }
 
         /// <summary>
         /// Gets or sets the window width.
@@ -34,5 +71,24 @@ namespace Spectre.Console
         /// Gets or sets the window height.
         /// </summary>
         int Height { get; set; }
+    }
+
+    public class LegacyBackend : IConsoleBackend
+    {
+        public LegacyBackend()
+        {
+            Cursor = new LegacyConsoleCursor();
+        }
+
+        public ICapabilities Capabilities { get; }
+
+        /// <inheritdoc />
+        public IConsoleCursor Cursor { get; }
+
+        /// <inheritdoc />
+        public IConsoleOutput Output { get; }
+
+        /// <inheritdoc />
+        public IAnsiConsoleInput Input { get; }
     }
 }

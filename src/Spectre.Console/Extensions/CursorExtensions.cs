@@ -1,7 +1,7 @@
 namespace Spectre.Console
 {
     /// <summary>
-    /// Contains extension methods for <see cref="IAnsiConsoleCursor"/>.
+    /// Contains extension methods for <see cref="IConsoleCursor"/>.
     /// </summary>
     public static class CursorExtensions
     {
@@ -9,7 +9,7 @@ namespace Spectre.Console
         /// Shows the cursor.
         /// </summary>
         /// <param name="cursor">The cursor.</param>
-        public static void Show(this IAnsiConsoleCursor cursor)
+        public static void Show(this IConsoleCursor cursor)
         {
             if (cursor is null)
             {
@@ -23,7 +23,7 @@ namespace Spectre.Console
         /// Hides the cursor.
         /// </summary>
         /// <param name="cursor">The cursor.</param>
-        public static void Hide(this IAnsiConsoleCursor cursor)
+        public static void Hide(this IConsoleCursor cursor)
         {
             if (cursor is null)
             {
@@ -37,7 +37,7 @@ namespace Spectre.Console
         /// Moves the cursor up.
         /// </summary>
         /// <param name="cursor">The cursor.</param>
-        public static void MoveUp(this IAnsiConsoleCursor cursor)
+        public static void MoveUp(this IConsoleCursor cursor)
         {
             if (cursor is null)
             {
@@ -52,7 +52,7 @@ namespace Spectre.Console
         /// </summary>
         /// <param name="cursor">The cursor.</param>
         /// <param name="steps">The number of steps to move the cursor.</param>
-        public static void MoveUp(this IAnsiConsoleCursor cursor, int steps)
+        public static void MoveUp(this IConsoleCursor cursor, int steps)
         {
             if (cursor is null)
             {
@@ -66,7 +66,7 @@ namespace Spectre.Console
         /// Moves the cursor down.
         /// </summary>
         /// <param name="cursor">The cursor.</param>
-        public static void MoveDown(this IAnsiConsoleCursor cursor)
+        public static void MoveDown(this IConsoleCursor cursor)
         {
             if (cursor is null)
             {
@@ -81,7 +81,7 @@ namespace Spectre.Console
         /// </summary>
         /// <param name="cursor">The cursor.</param>
         /// <param name="steps">The number of steps to move the cursor.</param>
-        public static void MoveDown(this IAnsiConsoleCursor cursor, int steps)
+        public static void MoveDown(this IConsoleCursor cursor, int steps)
         {
             if (cursor is null)
             {
@@ -95,7 +95,7 @@ namespace Spectre.Console
         /// Moves the cursor to the left.
         /// </summary>
         /// <param name="cursor">The cursor.</param>
-        public static void MoveLeft(this IAnsiConsoleCursor cursor)
+        public static void MoveLeft(this IConsoleCursor cursor)
         {
             if (cursor is null)
             {
@@ -110,7 +110,7 @@ namespace Spectre.Console
         /// </summary>
         /// <param name="cursor">The cursor.</param>
         /// <param name="steps">The number of steps to move the cursor.</param>
-        public static void MoveLeft(this IAnsiConsoleCursor cursor, int steps)
+        public static void MoveLeft(this IConsoleCursor cursor, int steps)
         {
             if (cursor is null)
             {
@@ -124,7 +124,7 @@ namespace Spectre.Console
         /// Moves the cursor to the right.
         /// </summary>
         /// <param name="cursor">The cursor.</param>
-        public static void MoveRight(this IAnsiConsoleCursor cursor)
+        public static void MoveRight(this IConsoleCursor cursor)
         {
             if (cursor is null)
             {
@@ -139,7 +139,7 @@ namespace Spectre.Console
         /// </summary>
         /// <param name="cursor">The cursor.</param>
         /// <param name="steps">The number of steps to move the cursor.</param>
-        public static void MoveRight(this IAnsiConsoleCursor cursor, int steps)
+        public static void MoveRight(this IConsoleCursor cursor, int steps)
         {
             if (cursor is null)
             {

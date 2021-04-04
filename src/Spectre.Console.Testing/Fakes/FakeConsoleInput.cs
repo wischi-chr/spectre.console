@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 namespace Spectre.Console.Testing
 {
-    public sealed class FakeConsoleInput : IAnsiConsoleInput
+    public sealed class FakeConsoleInput : IConsoleInput
     {
         private readonly Queue<ConsoleKeyInfo> _input;
 

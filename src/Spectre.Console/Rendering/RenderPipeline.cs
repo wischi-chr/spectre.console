@@ -7,17 +7,8 @@ namespace Spectre.Console.Rendering
     /// </summary>
     public sealed class RenderPipeline
     {
-        private readonly List<IRenderHook> _hooks;
-        private readonly object _lock;
-
-        /// <summary>
-        /// Initializes a new instance of the <see cref="RenderPipeline"/> class.
-        /// </summary>
-        public RenderPipeline()
-        {
-            _hooks = new List<IRenderHook>();
-            _lock = new object();
-        }
+        private readonly List<IRenderHook> _hooks = new();
+        private readonly object _lock = new();
 
         /// <summary>
         /// Attaches a new render hook onto the pipeline.

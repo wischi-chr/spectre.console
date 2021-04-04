@@ -20,7 +20,7 @@ namespace Spectre.Console
         public IAnsiConsoleCursor Cursor => _console.Cursor;
 
         /// <inheritdoc/>
-        public IAnsiConsoleInput Input => _console.Input;
+        public IConsoleInput Input => _console.Input;
 
         /// <inheritdoc/>
         public IExclusivityMode ExclusivityMode => _console.ExclusivityMode;

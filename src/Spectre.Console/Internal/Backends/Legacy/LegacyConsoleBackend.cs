@@ -7,7 +7,7 @@ namespace Spectre.Console
         private readonly IAnsiConsole _console;
         private Style _lastStyle;
 
-        public IAnsiConsoleCursor Cursor { get; }
+        public IConsoleCursor Cursor { get; }
 
         public LegacyConsoleBackend(IAnsiConsole console)
         {
@@ -32,7 +32,7 @@ namespace Spectre.Console
 
         public void Write(IRenderable renderable)
         {
-            foreach (var segment in renderable.GetSegments(_console))
+            foreach (var segment in _console.GetSegments(renderable))
             {
                 if (segment.IsControlCode)
                 {

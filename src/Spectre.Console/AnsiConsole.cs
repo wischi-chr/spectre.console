@@ -46,9 +46,9 @@ namespace Spectre.Console
         }
 
         /// <summary>
-        /// Gets the <see cref="IAnsiConsoleCursor"/>.
+        /// Gets the <see cref="IConsoleCursor"/>.
         /// </summary>
-        public static IAnsiConsoleCursor Cursor => _recorder?.Cursor ?? _console.Value.Cursor;
+        public static IConsoleCursor Cursor => _recorder?.Cursor ?? _console.Value.Cursor;
 
         /// <summary>
         /// Gets the console profile.

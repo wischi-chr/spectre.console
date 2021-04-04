@@ -2,7 +2,7 @@ using System;
 
 namespace Spectre.Console
 {
-    internal sealed class DefaultInput : IAnsiConsoleInput
+    internal sealed class DefaultInput : IConsoleInput
     {
         private readonly IProfile _profile;
 

@@ -1,6 +1,5 @@
 using System;
 using System.Runtime.InteropServices;
-using System.Text;
 using Spectre.Console.Enrichment;
 using Spectre.Console.Internal;
 
@@ -23,13 +22,13 @@ namespace Spectre.Console
                 throw new ArgumentNullException(nameof(settings));
             }
 
-            var buffer = settings.Out ?? System.Console.Out;
+            var buffer = settings.Out ?? throw new NotSupportedException();
 
             // Detect if the terminal support ANSI or not
-            var (supportsAnsi, legacyConsole) = DetectAnsi(settings, buffer);
+            // var (supportsAnsi, legacyConsole) = DetectAnsi(settings, buffer);
 
-            // Use console encoding or fall back to provided encoding
-            var encoding = buffer.IsStandardOut() || buffer.IsStandardError() ? System.Console.OutputEncoding : buffer.Encoding;
+            var supportsAnsi = true;
+            var legacyConsole = false;
 
             // Get the color system
             var colorSystem = settings.ColorSystem == ColorSystemSupport.Detect
@@ -43,67 +42,30 @@ namespace Spectre.Console
                 interactive = Environment.UserInteractive;
             }
 
-            var profile = new Profile(buffer, encoding)
+            var capabilities = new Capabilities()
             {
                 ColorSystem = colorSystem,
+                Ansi = supportsAnsi,
+                Links = supportsAnsi && !legacyConsole,
+                Legacy = legacyConsole,
+                Interactive = interactive,
+                Unicode = true, // TODO: Fix that
             };
 
-            profile.Capabilities.Ansi = supportsAnsi;
-            profile.Capabilities.Links = supportsAnsi && !legacyConsole;
-            profile.Capabilities.Legacy = legacyConsole;
-            profile.Capabilities.Interactive = interactive;
-            profile.Capabilities.Unicode = encoding.EncodingName.ContainsExact("Unicode");
-
             // Enrich the profile
-            ProfileEnricher.Enrich(
-                profile,
+            CapabilitiesEnricher.Enrich(
+                capabilities,
                 settings.Enrichment,
                 settings.EnvironmentVariables);
+
+            var profile = new Profile(buffer)
+            {
+                Capabilities = capabilities,
+            };
 
             return new AnsiConsoleFacade(
                 profile,
                 settings.ExclusivityMode ?? new DefaultExclusivityMode());
-        }
-
-        private static (bool Ansi, bool Legacy) DetectAnsi(AnsiConsoleSettings settings, System.IO.TextWriter buffer)
-        {
-            var supportsAnsi = settings.Ansi == AnsiSupport.Yes;
-            var legacyConsole = false;
-
-            if (settings.Ansi == AnsiSupport.Detect)
-            {
-                (supportsAnsi, legacyConsole) = AnsiDetector.Detect(buffer.IsStandardError(), true);
-
-                // Check whether or not this is a legacy console from the existing instance (if any).
-                // We need to do this because once we upgrade the console to support ENABLE_VIRTUAL_TERMINAL_PROCESSING
-                // on Windows, there is no way of detecting whether or not we're running on a legacy console or not.
-                if (AnsiConsole.Created && !legacyConsole && (buffer.IsStandardOut() || buffer.IsStandardError()) && AnsiConsole.Profile.Capabilities.Legacy)
-                {
-                    legacyConsole = AnsiConsole.Profile.Capabilities.Legacy;
-                }
-            }
-            else
-            {
-                if (buffer.IsStandardOut() || buffer.IsStandardError())
-                {
-                    // Are we running on Windows?
-                    if (RuntimeInformation.IsOSPlatform(OSPlatform.Windows))
-                    {
-                        // Not the first console we're creating?
-                        if (AnsiConsole.Created)
-                        {
-                            legacyConsole = AnsiConsole.Profile.Capabilities.Legacy;
-                        }
-                        else
-                        {
-                            // Try detecting whether or not this is a legacy console
-                            (_, legacyConsole) = AnsiDetector.Detect(buffer.IsStandardError(), false);
-                        }
-                    }
-                }
-            }
-
-            return (supportsAnsi, legacyConsole);
         }
     }
 }

@@ -32,7 +32,7 @@ namespace Spectre.Console
             new Regex("bvterm"), // Bitvise SSH Client
         };
 
-        public static (bool SupportsAnsi, bool LegacyConsole) Detect(bool stdError, bool upgrade)
+        public static (bool SupportsAnsi, bool LegacyConsole) Detect(bool upgrade)
         {
             // Running on Windows?
             if (RuntimeInformation.IsOSPlatform(OSPlatform.Windows))
@@ -44,8 +44,7 @@ namespace Spectre.Console
                     return (true, false);
                 }
 
-                var supportsAnsi = Windows.SupportsAnsi(upgrade, stdError, out var legacyConsole);
-                return (supportsAnsi, legacyConsole);
+                return Windows.SupportsAnsi(upgrade);
             }
 
             return DetectFromTerm();
@@ -92,7 +91,33 @@ namespace Spectre.Console
             [DllImport("kernel32.dll")]
             public static extern uint GetLastError();
 
-            public static bool SupportsAnsi(bool upgrade, bool stdError, out bool isLegacy)
+            public static (bool SupportsAnsi, bool LegacyConsole) SupportsAnsi(bool upgrade)
+            {
+                if (!upgrade)
+                {
+                    // Only test standard output. We assume standard error is the same.
+                    var supportsAnsi = SupportsAnsi(false, false, out var legacyConsole);
+                    return (supportsAnsi, legacyConsole);
+                }
+                else
+                {
+                    // Upgrade standard output first, if it fails we assume standard error
+                    // would fail too and return true for legacy console.
+                    var supportsAnsi = SupportsAnsi(true, false, out var legacyConsole);
+
+                    if (!supportsAnsi)
+                    {
+                        return (supportsAnsi, legacyConsole);
+                    }
+
+                    // if it succeeded we also upgrade standard error and assume it works as well.
+                    SupportsAnsi(true, true, out _);
+
+                    return (supportsAnsi, legacyConsole);
+                }
+            }
+
+            private static bool SupportsAnsi(bool upgrade, bool stdError, out bool isLegacy)
             {
                 isLegacy = false;
 

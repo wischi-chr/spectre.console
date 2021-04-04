@@ -1,6 +1,6 @@
 namespace Spectre.Console
 {
-    internal sealed class LegacyConsoleCursor : IAnsiConsoleCursor
+    internal sealed class LegacyConsoleCursor : IConsoleCursor
     {
         public void Show(bool show)
         {
@@ -31,10 +31,10 @@ namespace Spectre.Console
             }
         }
 
-        public void SetPosition(int x, int y)
+        public void SetPosition(int column, int line)
         {
-            System.Console.CursorLeft = x;
-            System.Console.CursorTop = y;
+            System.Console.CursorLeft = column;
+            System.Console.CursorTop = line;
         }
     }
 }

@@ -18,7 +18,7 @@ namespace Spectre.Console.Testing
         public IExclusivityMode ExclusivityMode => _exclusivityLock;
         public RenderPipeline Pipeline => _console.Pipeline;
 
-        IAnsiConsoleInput IAnsiConsole.Input => Input;
+        IConsoleInput IAnsiConsole.Input => Input;
 
         public FakeAnsiConsole(
             ColorSystem system,

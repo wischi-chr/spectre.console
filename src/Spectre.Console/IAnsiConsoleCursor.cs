@@ -3,7 +3,7 @@ namespace Spectre.Console
     /// <summary>
     /// Represents the console's cursor.
     /// </summary>
-    public interface IAnsiConsoleCursor
+    public interface IConsoleCursor
     {
         /// <summary>
         /// Shows or hides the cursor.

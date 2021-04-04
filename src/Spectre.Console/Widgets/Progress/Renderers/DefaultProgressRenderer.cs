@@ -13,8 +13,8 @@ namespace Spectre.Console
         private readonly LiveRenderable _live;
         private readonly object _lock;
         private readonly Stopwatch _stopwatch;
+        private readonly bool _hideCompleted;
         private TimeSpan _lastUpdate;
-        private bool _hideCompleted;
 
         public override TimeSpan RefreshRate { get; }
 
@@ -62,7 +62,7 @@ namespace Spectre.Console
                     _stopwatch.Start();
                 }
 
-                var renderContext = new RenderContext(_console.Profile.Capabilities);
+                var renderContext = new RenderContext(_console.Capabilities);
 
                 var delta = _stopwatch.Elapsed - _lastUpdate;
                 _lastUpdate = _stopwatch.Elapsed;

@@ -10,7 +10,7 @@ namespace Spectre.Console.Testing
     public sealed class FakeConsole : IAnsiConsole, IDisposable
     {
         public IProfile Profile { get; }
-        public IAnsiConsoleCursor Cursor => new FakeAnsiConsoleCursor();
+        public IConsoleCursor Cursor => new FakeAnsiConsoleCursor();
         IAnsiConsoleInput IAnsiConsole.Input => Input;
         public IExclusivityMode ExclusivityMode { get; }
         public RenderPipeline Pipeline { get; }

@@ -6,7 +6,7 @@ namespace ColorExample
     {
         public static void Main()
         {
-            if (AnsiConsole.Profile.Capabilities.ColorSystem == ColorSystem.NoColors)
+            if (AnsiConsole.Console.Capabilities.ColorSystem == ColorSystem.NoColors)
             {
                 /////////////////////////////////////////////////////////////////
                 // No colors
@@ -16,7 +16,7 @@ namespace ColorExample
                 return;
             }
 
-            if (AnsiConsole.Profile.Capabilities.Supports(ColorSystem.Legacy))
+            if (AnsiConsole.Console.Capabilities.Supports(ColorSystem.Legacy))
             {
                 /////////////////////////////////////////////////////////////////
                 // 3-BIT
@@ -39,7 +39,7 @@ namespace ColorExample
                 }
             }
 
-            if (AnsiConsole.Profile.Capabilities.Supports(ColorSystem.Standard))
+            if (AnsiConsole.Console.Capabilities.Supports(ColorSystem.Standard))
             {
                 /////////////////////////////////////////////////////////////////
                 // 4-BIT
@@ -62,7 +62,7 @@ namespace ColorExample
                 }
             }
 
-            if (AnsiConsole.Profile.Capabilities.Supports(ColorSystem.EightBit))
+            if (AnsiConsole.Console.Capabilities.Supports(ColorSystem.EightBit))
             {
                 /////////////////////////////////////////////////////////////////
                 // 8-BIT
@@ -89,7 +89,7 @@ namespace ColorExample
                 }
             }
 
-            if (AnsiConsole.Profile.Capabilities.Supports(ColorSystem.TrueColor))
+            if (AnsiConsole.Console.Capabilities.Supports(ColorSystem.TrueColor))
             {
                 /////////////////////////////////////////////////////////////////
                 // 24-BIT

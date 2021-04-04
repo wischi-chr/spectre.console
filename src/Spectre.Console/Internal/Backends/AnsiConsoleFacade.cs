@@ -5,20 +5,18 @@ namespace Spectre.Console
 {
     internal sealed class AnsiConsoleFacade : IAnsiConsole
     {
-        private readonly object _renderLock;
+        private readonly object _renderLock = new();
         private readonly AnsiConsoleBackend _ansiBackend;
         private readonly LegacyConsoleBackend _legacyBackend;
 
         public IProfile Profile { get; }
         public IAnsiConsoleCursor Cursor => GetBackend().Cursor;
-        public IAnsiConsoleInput Input { get; }
+        public IConsoleInput Input { get; }
         public IExclusivityMode ExclusivityMode { get; }
         public RenderPipeline Pipeline { get; }
 
         public AnsiConsoleFacade(IProfile profile, IExclusivityMode exclusivityMode)
         {
-            _renderLock = new object();
-
             Profile = profile ?? throw new ArgumentNullException(nameof(profile));
             Input = new DefaultInput(Profile);
             ExclusivityMode = exclusivityMode ?? throw new ArgumentNullException(nameof(exclusivityMode));

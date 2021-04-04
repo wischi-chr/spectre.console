@@ -10,17 +10,22 @@ namespace Spectre.Console
         /// <summary>
         /// Gets the console profile.
         /// </summary>
-        IProfile Profile { get; }
+        ICapabilities Capabilities { get; }
 
         /// <summary>
         /// Gets the console cursor.
         /// </summary>
-        IAnsiConsoleCursor Cursor { get; }
+        IConsoleCursor Cursor { get; }
 
         /// <summary>
         /// Gets the console input.
         /// </summary>
-        IAnsiConsoleInput Input { get; }
+        IConsoleInput Input { get; }
+
+        /// <summary>
+        /// Gets the console output.
+        /// </summary>
+        IConsoleOutput Output { get; }
 
         /// <summary>
         /// Gets the exclusivity mode.

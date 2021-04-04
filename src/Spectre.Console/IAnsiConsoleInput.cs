@@ -5,7 +5,7 @@ namespace Spectre.Console
     /// <summary>
     /// Represents the console's input mechanism.
     /// </summary>
-    public interface IAnsiConsoleInput
+    public interface IConsoleInput
     {
         /// <summary>
         /// Reads a key from the console.

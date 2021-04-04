@@ -3,7 +3,7 @@ using static Spectre.Console.AnsiSequences;
 
 namespace Spectre.Console
 {
-    internal sealed class AnsiConsoleCursor : IAnsiConsoleCursor
+    internal sealed class AnsiConsoleCursor : IConsoleCursor
     {
         private readonly AnsiConsoleBackend _backend;
 
