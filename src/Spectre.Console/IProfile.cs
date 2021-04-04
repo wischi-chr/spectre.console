@@ -27,6 +27,11 @@ namespace Spectre.Console
         /// Gets the console's input mechanism.
         /// </summary>
         IConsoleInput Input { get; }
+
+        /// <summary>
+        /// Gets the console's window mechanism.
+        /// </summary>
+        IConsoleWindow Window { get; }
     }
 
     /// <summary>

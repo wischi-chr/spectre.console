@@ -7,14 +7,13 @@ using static Spectre.Console.AnsiSequences;
 
 namespace Spectre.Console
 {
-    internal sealed class AnsiConsoleBackend : IConsoleBackend
+    internal sealed class ConsoleBackend : IConsoleBackend
     {
-
-
-        public IConsoleCursor Cursor { get; }
-        public ICapabilities Capabilities { get; }
-        public IConsoleOutput Output { get; }
-        public IConsoleInput Input { get; }
+        public IConsoleCursor Cursor { get; set; }
+        public ICapabilities Capabilities { get; set; }
+        public IConsoleOutput Output { get; set; }
+        public IConsoleInput Input { get; set; }
+        public IConsoleWindow Window { get; set; }
 
         public AnsiConsoleBackend(ICapabilities capabilities, IConsoleInput input, TextWriter standardOutput)
         {
@@ -24,7 +23,7 @@ namespace Spectre.Console
             Input = input ?? throw new ArgumentNullException(nameof(input));
 
             Cursor = new AnsiConsoleCursor(this);
-            Output = new AnsiConsoleOutput(standardOutput);
+            Output = new AnsiConsoleOutput(standardOutput, capabilities);
         }
     }
 

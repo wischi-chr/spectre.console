@@ -2,23 +2,15 @@ using System;
 
 namespace Spectre.Console
 {
-    internal sealed class DefaultInput : IConsoleInput
+    /// <summary>
+    /// Represents the console's input mechanism for System.Console.
+    /// </summary>
+    public sealed class ConsoleInput : IConsoleInput
     {
-        private readonly IProfile _profile;
-
-        public DefaultInput(IProfile profile)
-        {
-            _profile = profile ?? throw new ArgumentNullException(nameof(profile));
-        }
-
+        /// <inheritdoc />
         public ConsoleKeyInfo ReadKey(bool intercept)
         {
-            if (!_profile.Capabilities.Interactive)
-            {
-                throw new InvalidOperationException("Failed to read input in non-interactive mode.");
-            }
-
-            return _profile.ReadKey(intercept);
+            return System.Console.ReadKey(intercept);
         }
     }
 }
