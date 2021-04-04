@@ -142,7 +142,7 @@ namespace Spectre.Console
     }
 
     /// <summary>
-    /// Represents a virtual console window without a backend.
+    /// Represents a console window without a backend.
     /// </summary>
     public class ConsoleWindow : IConsoleWindow
     {
@@ -157,7 +157,7 @@ namespace Spectre.Console
     }
 
     /// <summary>
-    /// Represents the system console window.
+    /// Represents a console window backed by System.Console.
     /// </summary>
     public class SystemConsoleWindow : IConsoleWindow
     {
