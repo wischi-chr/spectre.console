@@ -24,7 +24,7 @@ namespace Spectre.Console
 
                 var os = Environment.OSVersion;
                 var major = os.Version.Major;
-                var build = os.Version.Minor;
+                var build = os.Version.Build;
 
                 if (major > 10)
                 {
