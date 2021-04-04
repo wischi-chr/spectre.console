@@ -15,7 +15,7 @@ namespace Spectre.Console
         public AnsiConsoleBackend(IAnsiConsole console)
         {
             _console = console ?? throw new ArgumentNullException(nameof(console));
-            _builder = new AnsiBuilder(_console.Profile);
+            _builder = new AnsiBuilder(_console.Profile.Capabilities);
 
             Cursor = new AnsiConsoleCursor(this);
         }
@@ -59,8 +59,8 @@ namespace Spectre.Console
 
             if (builder.Length > 0)
             {
-                _console.Profile.Out.Write(builder.ToString());
-                _console.Profile.Out.Flush();
+                _console.Profile.StandardOutput.Write(builder.ToString());
+                _console.Profile.StandardOutput.Flush();
             }
         }
     }

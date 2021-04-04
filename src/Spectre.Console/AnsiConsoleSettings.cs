@@ -38,7 +38,7 @@ namespace Spectre.Console
         /// <summary>
         /// Gets or sets the profile enrichments settings.
         /// </summary>
-        public ProfileEnrichment Enrichment { get; set; }
+        public CapabilitiesEnrichment Enrichment { get; set; }
 
         /// <summary>
         /// Gets or sets the environment variables.
@@ -51,7 +51,7 @@ namespace Spectre.Console
         /// </summary>
         public AnsiConsoleSettings()
         {
-            Enrichment = new ProfileEnrichment();
+            Enrichment = new CapabilitiesEnrichment();
         }
     }
 }

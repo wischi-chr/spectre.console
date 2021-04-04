@@ -6,12 +6,12 @@ namespace Spectre.Console
 {
     internal sealed class AnsiBuilder
     {
-        private readonly Profile _profile;
+        private readonly ICapabilities _capabilities;
         private readonly AnsiLinkHasher _linkHasher;
 
-        public AnsiBuilder(Profile profile)
+        public AnsiBuilder(ICapabilities capabilities)
         {
-            _profile = profile ?? throw new ArgumentNullException(nameof(profile));
+            _capabilities = capabilities ?? throw new ArgumentNullException(nameof(capabilities));
             _linkHasher = new AnsiLinkHasher();
         }
 
@@ -29,7 +29,7 @@ namespace Spectre.Console
             {
                 codes = codes.Concat(
                     AnsiColorBuilder.GetAnsiCodes(
-                        _profile.ColorSystem,
+                        _capabilities.ColorSystem,
                         style.Foreground,
                         true));
             }
@@ -39,7 +39,7 @@ namespace Spectre.Console
             {
                 codes = codes.Concat(
                     AnsiColorBuilder.GetAnsiCodes(
-                        _profile.ColorSystem,
+                        _capabilities.ColorSystem,
                         style.Background,
                         false));
             }
@@ -54,7 +54,7 @@ namespace Spectre.Console
                 ? $"{SGR(result)}{text}{SGR(0)}"
                 : text;
 
-            if (style.Link != null && !_profile.Capabilities.Legacy)
+            if (style.Link != null && !_capabilities.Legacy)
             {
                 var link = style.Link;
 

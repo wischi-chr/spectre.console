@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 namespace Spectre.Console.Enrichment
 {
-    internal sealed class GitHubEnricher : IProfileEnricher
+    internal sealed class GitHubEnricher : ICapabilitiesEnricher
     {
         public string Name => "GitHub";
 
@@ -17,12 +17,12 @@ namespace Spectre.Console.Enrichment
             return false;
         }
 
-        public void Enrich(Profile profile)
+        public void Enrich(Capabilities capabilities)
         {
-            profile.Capabilities.Ansi = true;
-            profile.Capabilities.Legacy = false;
-            profile.Capabilities.Interactive = false;
-            profile.Capabilities.Links = false;
+            capabilities.Ansi = true;
+            capabilities.Legacy = false;
+            capabilities.Interactive = false;
+            capabilities.Links = false;
         }
     }
 }

@@ -5,7 +5,8 @@ namespace Spectre.Console
     /// <summary>
     /// Contains settings for profile enrichment.
     /// </summary>
-    public sealed class ProfileEnrichment
+    public sealed class CapabilitiesEnrichment
+
     {
         /// <summary>
         /// Gets or sets a value indicating whether or not
@@ -17,6 +18,6 @@ namespace Spectre.Console
         /// <summary>
         /// Gets or sets the list of custom enrichers to use.
         /// </summary>
-        public List<IProfileEnricher>? Enrichers { get; set; }
+        public List<ICapabilitiesEnricher>? Enrichers { get; set; }
     }
 }

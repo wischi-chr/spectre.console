@@ -1,10 +1,11 @@
 using System;
 using System.Linq;
 using Spectre.Console.Cli;
-using SystemConsole = System.Console;
 
 namespace Spectre.Console.Tests.Data
 {
+    using SystemConsole = System.Console;
+
     public abstract class AnimalCommand<TSettings> : Command<TSettings>
         where TSettings : CommandSettings
     {

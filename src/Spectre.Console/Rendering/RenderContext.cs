@@ -7,12 +7,12 @@ namespace Spectre.Console.Rendering
     /// </summary>
     public sealed class RenderContext
     {
-        private readonly IReadOnlyCapabilities _capabilities;
+        private readonly ICapabilities _capabilities;
 
         /// <summary>
         /// Gets the current color system.
         /// </summary>
-        public ColorSystem ColorSystem { get; }
+        public ColorSystem ColorSystem => _capabilities.ColorSystem;
 
         /// <summary>
         /// Gets a value indicating whether or not unicode is supported.
@@ -33,19 +33,17 @@ namespace Spectre.Console.Rendering
         /// <summary>
         /// Initializes a new instance of the <see cref="RenderContext"/> class.
         /// </summary>
-        /// <param name="colorSystem">The color system.</param>
         /// <param name="capabilities">The capabilities.</param>
         /// <param name="justification">The justification.</param>
-        public RenderContext(ColorSystem colorSystem, IReadOnlyCapabilities capabilities, Justify? justification = null)
-            : this(colorSystem, capabilities, justification, false)
+        public RenderContext(ICapabilities capabilities, Justify? justification = null)
+            : this(capabilities, false, justification)
         {
         }
 
-        private RenderContext(ColorSystem colorSystem, IReadOnlyCapabilities capabilities, Justify? justification = null, bool singleLine = false)
+        private RenderContext(ICapabilities capabilities, bool singleLine, Justify? justification = null)
         {
             _capabilities = capabilities ?? throw new ArgumentNullException(nameof(capabilities));
 
-            ColorSystem = colorSystem;
             Justification = justification;
             SingleLine = singleLine;
         }
@@ -57,7 +55,7 @@ namespace Spectre.Console.Rendering
         /// <returns>A new <see cref="RenderContext"/> instance.</returns>
         public RenderContext WithJustification(Justify? justification)
         {
-            return new RenderContext(ColorSystem, _capabilities, justification, SingleLine);
+            return new RenderContext(_capabilities, SingleLine, justification);
         }
 
         /// <summary>
@@ -72,7 +70,7 @@ namespace Spectre.Console.Rendering
         /// <returns>A new <see cref="RenderContext"/> instance.</returns>
         internal RenderContext WithSingleLine()
         {
-            return new RenderContext(ColorSystem, _capabilities, Justification, true);
+            return new RenderContext(_capabilities, true, Justification);
         }
     }
 }

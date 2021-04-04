@@ -1,6 +1,6 @@
 namespace Spectre.Console.Testing
 {
-    public sealed class FakeCapabilities : IReadOnlyCapabilities
+    public sealed class FakeCapabilities : ICapabilities
     {
         public bool Ansi { get; set; }
 
@@ -8,10 +8,10 @@ namespace Spectre.Console.Testing
 
         public bool Legacy { get; set; }
 
-        public bool Tty { get; set; }
-
         public bool Interactive { get; set; }
 
         public bool Unicode { get; set; }
+
+        public ColorSystem ColorSystem { get; set; }
     }
 }

@@ -2,7 +2,7 @@ using System.Collections.Generic;
 
 namespace Spectre.Console.Enrichment
 {
-    internal sealed class TravisEnricher : IProfileEnricher
+    internal sealed class TravisEnricher : ICapabilitiesEnricher
     {
         public string Name => "Travis";
 
@@ -11,9 +11,9 @@ namespace Spectre.Console.Enrichment
             return environmentVariables.ContainsKey("TRAVIS");
         }
 
-        public void Enrich(Profile profile)
+        public void Enrich(Capabilities capabilities)
         {
-            profile.Capabilities.Interactive = false;
+            capabilities.Interactive = false;
         }
     }
 }

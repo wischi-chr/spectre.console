@@ -12,7 +12,7 @@ namespace Spectre.Console.Testing
 
         public string Output => _writer.ToString();
 
-        public Profile Profile => _console.Profile;
+        public IProfile Profile => _console.Profile;
         public IAnsiConsoleCursor Cursor => _console.Cursor;
         public FakeConsoleInput Input { get; }
         public IExclusivityMode ExclusivityMode => _exclusivityLock;
@@ -34,14 +34,13 @@ namespace Spectre.Console.Testing
                 Ansi = ansi,
                 ColorSystem = (ColorSystemSupport)system,
                 Out = _writer,
-                Enrichment = new ProfileEnrichment
+                Enrichment = new CapabilitiesEnrichment
                 {
                     UseDefaultEnrichers = false,
                 },
             });
 
             _console.Profile.Width = width;
-            _console.Profile.Capabilities.Unicode = true;
 
             Input = new FakeConsoleInput();
         }

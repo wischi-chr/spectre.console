@@ -53,7 +53,7 @@ namespace Spectre.Console
         /// <summary>
         /// Gets the console profile.
         /// </summary>
-        public static Profile Profile => Console.Profile;
+        public static IProfile Profile => Console.Profile;
 
         /// <summary>
         /// Creates a new <see cref="IAnsiConsole"/> instance

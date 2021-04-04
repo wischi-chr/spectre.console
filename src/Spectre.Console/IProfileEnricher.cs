@@ -5,7 +5,8 @@ namespace Spectre.Console
     /// <summary>
     /// Represents something that can enrich a profile.
     /// </summary>
-    public interface IProfileEnricher
+    public interface ICapabilitiesEnricher
+
     {
         /// <summary>
         /// Gets the name of the enricher.
@@ -22,7 +23,7 @@ namespace Spectre.Console
         /// <summary>
         /// Enriches the profile.
         /// </summary>
-        /// <param name="profile">The profile to enrich.</param>
-        void Enrich(Profile profile);
+        /// <param name="capabilities">The profile to enrich.</param>
+        void Enrich(Capabilities capabilities);
     }
 }

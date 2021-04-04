@@ -2,7 +2,7 @@ using System.Collections.Generic;
 
 namespace Spectre.Console.Enrichment
 {
-    internal sealed class AppVeyorEnricher : IProfileEnricher
+    internal sealed class AppVeyorEnricher : ICapabilitiesEnricher
     {
         public string Name => "AppVeyor";
 
@@ -11,9 +11,9 @@ namespace Spectre.Console.Enrichment
             return environmentVariables.ContainsKey("APPVEYOR");
         }
 
-        public void Enrich(Profile profile)
+        public void Enrich(Capabilities capabilities)
         {
-            profile.Capabilities.Interactive = false;
+            capabilities.Interactive = false;
         }
     }
 }

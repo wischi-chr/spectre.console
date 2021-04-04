@@ -2,7 +2,7 @@ using System.Collections.Generic;
 
 namespace Spectre.Console.Enrichment
 {
-    internal sealed class TeamCityEnricher : IProfileEnricher
+    internal sealed class TeamCityEnricher : ICapabilitiesEnricher
     {
         public string Name => "TeamCity";
 
@@ -11,9 +11,9 @@ namespace Spectre.Console.Enrichment
             return environmentVariables.ContainsKey("TEAMCITY_VERSION");
         }
 
-        public void Enrich(Profile profile)
+        public void Enrich(Capabilities capabilities)
         {
-            profile.Capabilities.Interactive = false;
+            capabilities.Interactive = false;
         }
     }
 }

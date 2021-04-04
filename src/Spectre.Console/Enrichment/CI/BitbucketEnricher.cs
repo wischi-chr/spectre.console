@@ -2,7 +2,7 @@ using System.Collections.Generic;
 
 namespace Spectre.Console.Enrichment
 {
-    internal sealed class BitbucketEnricher : IProfileEnricher
+    internal sealed class BitbucketEnricher : ICapabilitiesEnricher
     {
         public string Name => "Bitbucket";
 
@@ -13,9 +13,9 @@ namespace Spectre.Console.Enrichment
                 environmentVariables.ContainsKey("BITBUCKET_COMMIT");
         }
 
-        public void Enrich(Profile profile)
+        public void Enrich(Capabilities capabilities)
         {
-            profile.Capabilities.Interactive = false;
+            capabilities.Interactive = false;
         }
     }
 }

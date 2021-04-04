@@ -9,13 +9,13 @@ namespace Spectre.Console
         private readonly AnsiConsoleBackend _ansiBackend;
         private readonly LegacyConsoleBackend _legacyBackend;
 
-        public Profile Profile { get; }
+        public IProfile Profile { get; }
         public IAnsiConsoleCursor Cursor => GetBackend().Cursor;
         public IAnsiConsoleInput Input { get; }
         public IExclusivityMode ExclusivityMode { get; }
         public RenderPipeline Pipeline { get; }
 
-        public AnsiConsoleFacade(Profile profile, IExclusivityMode exclusivityMode)
+        public AnsiConsoleFacade(IProfile profile, IExclusivityMode exclusivityMode)
         {
             _renderLock = new object();
 

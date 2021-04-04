@@ -4,9 +4,10 @@ using System.Linq;
 
 namespace Spectre.Console.Enrichment
 {
-    internal static class ProfileEnricher
+    internal static class CapabilitiesEnricher
+
     {
-        private static readonly List<IProfileEnricher> _defaultEnrichers = new List<IProfileEnricher>
+        private static readonly List<ICapabilitiesEnricher> _defaultEnrichers = new()
         {
             new AppVeyorEnricher(),
             new BambooEnricher(),
@@ -24,16 +25,16 @@ namespace Spectre.Console.Enrichment
         };
 
         public static void Enrich(
-            Profile profile,
-            ProfileEnrichment settings,
+            Capabilities capabilities,
+            CapabilitiesEnrichment settings,
             IDictionary<string, string>? environmentVariables)
         {
-            if (profile is null)
+            if (capabilities is null)
             {
-                throw new ArgumentNullException(nameof(profile));
+                throw new ArgumentNullException(nameof(capabilities));
             }
 
-            settings ??= new ProfileEnrichment();
+            settings ??= new CapabilitiesEnrichment();
 
             var variables = GetEnvironmentVariables(environmentVariables);
             foreach (var enricher in GetEnrichers(settings))
@@ -45,15 +46,17 @@ namespace Spectre.Console.Enrichment
 
                 if (enricher.Enabled(variables))
                 {
-                    enricher.Enrich(profile);
-                    profile.AddEnricher(enricher.Name);
+                    enricher.Enrich(capabilities);
+
+                    // TODO: Fix that ?
+                    // profile.AddEnricher(enricher.Name);
                 }
             }
         }
 
-        private static List<IProfileEnricher> GetEnrichers(ProfileEnrichment settings)
+        private static List<ICapabilitiesEnricher> GetEnrichers(CapabilitiesEnrichment settings)
         {
-            var enrichers = new List<IProfileEnricher>();
+            var enrichers = new List<ICapabilitiesEnricher>();
 
             if (settings.UseDefaultEnrichers)
             {

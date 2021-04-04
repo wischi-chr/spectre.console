@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 namespace Spectre.Console.Enrichment
 {
-    internal sealed class MyGetEnricher : IProfileEnricher
+    internal sealed class MyGetEnricher : ICapabilitiesEnricher
     {
         public string Name => "MyGet";
 
@@ -17,9 +17,9 @@ namespace Spectre.Console.Enrichment
             return false;
         }
 
-        public void Enrich(Profile profile)
+        public void Enrich(Capabilities capabilities)
         {
-            profile.Capabilities.Interactive = false;
+            capabilities.Interactive = false;
         }
     }
 }

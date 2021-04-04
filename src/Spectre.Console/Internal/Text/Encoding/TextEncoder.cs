@@ -4,14 +4,14 @@ using Spectre.Console.Rendering;
 
 namespace Spectre.Console.Internal
 {
-    internal sealed class EncoderCapabilities : IReadOnlyCapabilities
+    internal sealed class EncoderCapabilities : ICapabilities
     {
         public bool Ansi => false;
         public bool Links => false;
         public bool Legacy => false;
-        public bool Tty => false;
         public bool Interactive => false;
         public bool Unicode => true;
+        public ColorSystem ColorSystem => ColorSystem.TrueColor;
 
         public static EncoderCapabilities Default { get; } = new EncoderCapabilities();
     }
@@ -20,7 +20,7 @@ namespace Spectre.Console.Internal
     {
         public string Encode(IAnsiConsole console, IEnumerable<IRenderable> renderables)
         {
-            var context = new RenderContext(ColorSystem.TrueColor, EncoderCapabilities.Default);
+            var context = new RenderContext(EncoderCapabilities.Default);
             var builder = new StringBuilder();
 
             foreach (var renderable in renderables)

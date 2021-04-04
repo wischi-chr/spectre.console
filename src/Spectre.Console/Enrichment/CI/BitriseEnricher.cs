@@ -2,7 +2,7 @@ using System.Collections.Generic;
 
 namespace Spectre.Console.Enrichment
 {
-    internal sealed class BitriseEnricher : IProfileEnricher
+    internal sealed class BitriseEnricher : ICapabilitiesEnricher
     {
         public string Name => "Bitrise";
 
@@ -11,9 +11,9 @@ namespace Spectre.Console.Enrichment
             return environmentVariables.ContainsKey("BITRISE_BUILD_URL");
         }
 
-        public void Enrich(Profile profile)
+        public void Enrich(Capabilities capabilities)
         {
-            profile.Capabilities.Interactive = false;
+            capabilities.Interactive = false;
         }
     }
 }

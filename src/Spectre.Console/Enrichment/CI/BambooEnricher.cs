@@ -2,7 +2,7 @@ using System.Collections.Generic;
 
 namespace Spectre.Console.Enrichment
 {
-    internal sealed class BambooEnricher : IProfileEnricher
+    internal sealed class BambooEnricher : ICapabilitiesEnricher
     {
         public string Name => "Bamboo";
 
@@ -11,9 +11,9 @@ namespace Spectre.Console.Enrichment
             return environmentVariables.ContainsKey("bamboo_buildNumber");
         }
 
-        public void Enrich(Profile profile)
+        public void Enrich(Capabilities capabilities)
         {
-            profile.Capabilities.Interactive = false;
+            capabilities.Interactive = false;
         }
     }
 }

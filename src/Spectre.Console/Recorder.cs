@@ -14,7 +14,7 @@ namespace Spectre.Console
         private readonly List<IRenderable> _recorded;
 
         /// <inheritdoc/>
-        public Profile Profile => _console.Profile;
+        public IProfile Profile => _console.Profile;
 
         /// <inheritdoc/>
         public IAnsiConsoleCursor Cursor => _console.Cursor;

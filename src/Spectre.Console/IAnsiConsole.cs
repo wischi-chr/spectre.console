@@ -10,7 +10,7 @@ namespace Spectre.Console
         /// <summary>
         /// Gets the console profile.
         /// </summary>
-        Profile Profile { get; }
+        IProfile Profile { get; }
 
         /// <summary>
         /// Gets the console cursor.

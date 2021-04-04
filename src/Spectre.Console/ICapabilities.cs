@@ -1,9 +1,9 @@
-namespace Spectre.Console
+﻿namespace Spectre.Console
 {
     /// <summary>
-    /// Represents (read-only) console capabilities.
+    /// Represents the capabilites of an <see cref="IProfile"/>.
     /// </summary>
-    public interface IReadOnlyCapabilities
+    public interface ICapabilities
     {
         /// <summary>
         /// Gets a value indicating whether or not
@@ -28,12 +28,6 @@ namespace Spectre.Console
         bool Legacy { get; }
 
         /// <summary>
-        /// Gets a value indicating whether or not
-        /// console output has been redirected.
-        /// </summary>
-        bool Tty { get; }
-
-        /// <summary>
         /// Gets a value indicating whether
         /// or not the console supports interaction.
         /// </summary>
@@ -44,5 +38,10 @@ namespace Spectre.Console
         /// or not the console supports Unicode.
         /// </summary>
         bool Unicode { get; }
+
+        /// <summary>
+        /// Gets highest color system the console supports.
+        /// </summary>
+        public ColorSystem ColorSystem { get; }
     }
 }

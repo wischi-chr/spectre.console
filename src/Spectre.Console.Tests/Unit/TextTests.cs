@@ -11,11 +11,11 @@ namespace Spectre.Console.Tests.Unit
         public void Should_Consider_The_Longest_Word_As_Minimum_Width()
         {
             // Given
-            var caps = new FakeCapabilities { Unicode = true };
+            var caps = new FakeCapabilities { Unicode = true, ColorSystem = ColorSystem.TrueColor };
             var text = new Text("Foo Bar Baz\nQux\nLol mobile");
 
             // When
-            var result = ((IRenderable)text).Measure(new RenderContext(ColorSystem.TrueColor, caps), 80);
+            var result = ((IRenderable)text).Measure(new RenderContext(caps), 80);
 
             // Then
             result.Min.ShouldBe(6);
@@ -25,11 +25,11 @@ namespace Spectre.Console.Tests.Unit
         public void Should_Consider_The_Longest_Line_As_Maximum_Width()
         {
             // Given
-            var caps = new FakeCapabilities { Unicode = true };
+            var caps = new FakeCapabilities { Unicode = true, ColorSystem = ColorSystem.TrueColor };
             var text = new Text("Foo Bar Baz\nQux\nLol mobile");
 
             // When
-            var result = ((IRenderable)text).Measure(new RenderContext(ColorSystem.TrueColor, caps), 80);
+            var result = ((IRenderable)text).Measure(new RenderContext(caps), 80);
 
             // Then
             result.Max.ShouldBe(11);
