@@ -7,7 +7,7 @@ namespace Cursor
         public static void Main(string[] args)
         {
             // Check if we can accept key strokes
-            if (!AnsiConsole.Profile.Capabilities.Interactive)
+            if (!AnsiConsole.Console.Capabilities.Interactive)
             {
                 AnsiConsole.MarkupLine("[red]Environment does not support interaction.[/]");
                 return;

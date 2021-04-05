@@ -77,14 +77,14 @@ namespace Spectre.Console
                 throw new ArgumentNullException(nameof(console));
             }
 
-            if (!console.Profile.Capabilities.Interactive)
+            if (!console.Capabilities.Interactive)
             {
                 throw new NotSupportedException(
                     "Cannot show multi selection prompt since the current " +
                     "terminal isn't interactive.");
             }
 
-            if (!console.Profile.Capabilities.Ansi)
+            if (!console.Capabilities.Ansi)
             {
                 throw new NotSupportedException(
                     "Cannot show multi selection prompt since the current " +

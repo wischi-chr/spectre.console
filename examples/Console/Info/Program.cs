@@ -15,8 +15,8 @@ namespace InfoExample
                 .AddRow("[b]Supports links?[/]", $"{YesNo(AnsiConsole.Console.Capabilities.Links)}")
                 .AddRow("[b]Legacy console?[/]", $"{YesNo(AnsiConsole.Console.Capabilities.Legacy)}")
                 .AddRow("[b]Interactive?[/]", $"{YesNo(AnsiConsole.Console.Capabilities.Interactive)}")
-                .AddRow("[b]Buffer width[/]", $"{AnsiConsole.Console.Output.Width}")
-                .AddRow("[b]Buffer height[/]", $"{AnsiConsole.Console.Output.Height}");
+                .AddRow("[b]Window width[/]", $"{AnsiConsole.Console.Window.Width}")
+                .AddRow("[b]Window height[/]", $"{AnsiConsole.Console.Window.Height}");
 
             AnsiConsole.Render(
                 new Panel(grid)

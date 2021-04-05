@@ -6,12 +6,7 @@ namespace Spectre.Console.Internal
 {
     internal sealed class DefaultExclusivityMode : IExclusivityMode
     {
-        private static readonly SemaphoreSlim _semaphore;
-
-        static DefaultExclusivityMode()
-        {
-            _semaphore = new SemaphoreSlim(1, 1);
-        }
+        private static readonly SemaphoreSlim _semaphore = new(1, 1);
 
         public T Run<T>(Func<T> func)
         {

@@ -47,7 +47,7 @@ namespace Spectre.Console.Tests.Unit
         public void Should_Throw_If_Closing_Tag_Is_Not_Properly_Escaped(string input)
         {
             // Given
-            var console = new FakeConsole();
+            var console = FakeConsole.Create();
 
             // When
             var result = Record.Exception(() => new Markup(input));
@@ -62,7 +62,7 @@ namespace Spectre.Console.Tests.Unit
         public void Should_Escape_Markup_Blocks_As_Expected()
         {
             // Given
-            var console = new FakeConsole();
+            var console = FakeConsole.Create();
             var markup = new Markup("Hello [[ World ]] !");
 
             // When
@@ -78,7 +78,7 @@ namespace Spectre.Console.Tests.Unit
         public void Should_Render_Links_As_Expected(string input, string output)
         {
             // Given
-            var console = new FakeConsole();
+            var console = FakeConsole.Create();
             var markup = new Markup(input);
 
             // When
@@ -92,7 +92,7 @@ namespace Spectre.Console.Tests.Unit
         public void Should_not_fail_with_brackets_on_calls_without_args()
         {
             // Given
-            var console = new FakeAnsiConsole(ColorSystem.Standard, AnsiSupport.Yes);
+            var console = FakeConsole.Create(ColorSystem.Standard, AnsiSupport.Yes);
 
             // When
             console.MarkupLine("{");

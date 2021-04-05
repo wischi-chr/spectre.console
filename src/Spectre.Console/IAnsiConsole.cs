@@ -5,28 +5,8 @@ namespace Spectre.Console
     /// <summary>
     /// Represents a console.
     /// </summary>
-    public interface IAnsiConsole
+    public interface IAnsiConsole : IConsole
     {
-        /// <summary>
-        /// Gets the console profile.
-        /// </summary>
-        ICapabilities Capabilities { get; }
-
-        /// <summary>
-        /// Gets the console cursor.
-        /// </summary>
-        IConsoleCursor Cursor { get; }
-
-        /// <summary>
-        /// Gets the console input.
-        /// </summary>
-        IConsoleInput Input { get; }
-
-        /// <summary>
-        /// Gets the console output.
-        /// </summary>
-        IConsoleOutput Output { get; }
-
         /// <summary>
         /// Gets the exclusivity mode.
         /// </summary>

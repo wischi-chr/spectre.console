@@ -31,7 +31,7 @@ namespace Spectre.Console.Testing
             CommandContext context = null;
             CommandSettings settings = null;
 
-            using var console = new FakeConsole();
+            using var console = FakeConsole.Create();
 
             var app = new CommandApp();
             _appConfiguration?.Invoke(app);
@@ -66,7 +66,7 @@ namespace Spectre.Console.Testing
             CommandContext context = null;
             CommandSettings settings = null;
 
-            using var console = new FakeConsole(width: int.MaxValue);
+            using var console = FakeConsole.Create(width: int.MaxValue);
 
             var app = new CommandApp();
             _appConfiguration?.Invoke(app);

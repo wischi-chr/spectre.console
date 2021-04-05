@@ -657,7 +657,7 @@ namespace Spectre.Console.Tests.Unit.Cli
 
             public string Run(params string[] args)
             {
-                using (var console = new FakeConsole())
+                using (var console = FakeConsole.Create())
                 {
                     var app = new CommandApp();
                     _appConfiguration?.Invoke(app);

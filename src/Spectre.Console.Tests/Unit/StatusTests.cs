@@ -15,7 +15,7 @@ namespace Spectre.Console.Tests.Unit
         public Task Should_Render_Status_Correctly()
         {
             // Given
-            var console = new FakeAnsiConsole(ColorSystem.TrueColor, width: 10);
+            var console = FakeConsole.Create(ColorSystem.TrueColor, width: 10);
 
             var status = new Status(console);
             status.AutoRefresh = false;

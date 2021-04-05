@@ -38,7 +38,7 @@ namespace Spectre.Console
             var result = new List<Segment>();
             foreach (var renderable in renderables)
             {
-                result.AddRange(renderable.Render(options, console.Output.Width));
+                result.AddRange(renderable.Render(options, console.Window.Width));
             }
 
             return Segment.Merge(result);

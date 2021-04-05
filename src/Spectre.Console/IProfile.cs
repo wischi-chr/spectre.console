@@ -6,7 +6,7 @@ namespace Spectre.Console
     /// <summary>
     /// Represents the interface to a console.
     /// </summary>
-    public interface IConsoleBackend
+    public interface IConsole
     {
         /// <summary>
         /// Gets the capabilities of the console.
@@ -76,24 +76,5 @@ namespace Spectre.Console
         /// Gets or sets the window height.
         /// </summary>
         int Height { get; set; }
-    }
-
-    public class LegacyBackend : IConsoleBackend
-    {
-        public LegacyBackend()
-        {
-            Cursor = new LegacyConsoleCursor();
-        }
-
-        public ICapabilities Capabilities { get; }
-
-        /// <inheritdoc />
-        public IConsoleCursor Cursor { get; }
-
-        /// <inheritdoc />
-        public IConsoleOutput Output { get; }
-
-        /// <inheritdoc />
-        public IAnsiConsoleInput Input { get; }
     }
 }

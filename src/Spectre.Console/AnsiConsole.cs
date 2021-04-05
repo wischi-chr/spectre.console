@@ -51,11 +51,6 @@ namespace Spectre.Console
         public static IConsoleCursor Cursor => _recorder?.Cursor ?? _console.Value.Cursor;
 
         /// <summary>
-        /// Gets the console profile.
-        /// </summary>
-        public static IProfile Profile => Console.Profile;
-
-        /// <summary>
         /// Creates a new <see cref="IAnsiConsole"/> instance
         /// from the provided settings.
         /// </summary>

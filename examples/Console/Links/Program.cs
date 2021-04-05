@@ -6,7 +6,7 @@ namespace LinkExample
     {
         public static void Main()
         {
-            if (AnsiConsole.Profile.Capabilities.Links)
+            if (AnsiConsole.Console.Capabilities.Links)
             {
                 AnsiConsole.MarkupLine("[link=https://patriksvensson.se]Click to visit my blog[/]!");
             }

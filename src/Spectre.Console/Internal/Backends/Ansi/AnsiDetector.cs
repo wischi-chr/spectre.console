@@ -119,8 +119,9 @@ namespace Spectre.Console
                 // TODO: Remember take into account upgraded terminals
                 try
                 {
-                    var @out = GetStdHandle(stdError ? STD_ERROR_HANDLE : STD_OUTPUT_HANDLE);
-                    if (!GetConsoleMode(@out, out var mode))
+                    var stdHandle = GetStdHandle(stdError ? STD_ERROR_HANDLE : STD_OUTPUT_HANDLE);
+
+                    if (!GetConsoleMode(stdHandle, out var mode))
                     {
                         // Could not get console mode, try TERM (set in cygwin, WSL-Shell).
                         var (ansiFromTerm, legacyFromTerm) = DetectFromTerm();
@@ -140,7 +141,7 @@ namespace Spectre.Console
 
                         // Try enable ANSI support.
                         mode |= ENABLE_VIRTUAL_TERMINAL_PROCESSING | DISABLE_NEWLINE_AUTO_RETURN;
-                        if (!SetConsoleMode(@out, mode))
+                        if (!SetConsoleMode(stdHandle, mode))
                         {
                             // Enabling failed.
                             return false;

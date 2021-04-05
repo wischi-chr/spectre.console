@@ -19,7 +19,7 @@ namespace Spectre.Console.Tests.Unit
         public void Should_Write_Decorated_Text_Correctly(Decoration decoration, string expected)
         {
             // Given
-            var console = new FakeAnsiConsole(ColorSystem.TrueColor);
+            var console = FakeConsole.Create(ColorSystem.TrueColor);
 
             // When
             console.Write("Hello World", new Style().Decoration(decoration));
@@ -34,7 +34,7 @@ namespace Spectre.Console.Tests.Unit
         public void Should_Write_Text_With_Multiple_Decorations_Correctly(Decoration decoration, string expected)
         {
             // Given
-            var console = new FakeAnsiConsole(ColorSystem.TrueColor);
+            var console = FakeConsole.Create(ColorSystem.TrueColor);
 
             // When
             console.Write("Hello World", new Style().Decoration(decoration));

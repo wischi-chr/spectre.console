@@ -2,149 +2,129 @@ using System;
 using System.IO;
 using System.Runtime.InteropServices;
 using System.Text;
+using Spectre.Console.Internal;
 using Spectre.Console.Rendering;
 using static Spectre.Console.AnsiSequences;
 
 namespace Spectre.Console
 {
-    internal sealed class ConsoleBackend : IConsoleBackend
+    public sealed class ConsoleBuildSettings
     {
-        public IConsoleCursor Cursor { get; set; }
-        public ICapabilities Capabilities { get; set; }
-        public IConsoleOutput Output { get; set; }
-        public IConsoleInput Input { get; set; }
-        public IConsoleWindow Window { get; set; }
+        /// <summary>
+        /// Gets or sets the desired capabilities.
+        /// </summary>
+        /// <remarks>
+        /// Depending on the system the capabilities might be downgraded
+        /// </remarks>
+        public Capabilities DesiredCapabilities { get; set; } = new();
 
-        public AnsiConsoleBackend(ICapabilities capabilities, IConsoleInput input, TextWriter standardOutput)
-        {
-
-
-            Capabilities = capabilities ?? throw new ArgumentNullException(nameof(capabilities));
-            Input = input ?? throw new ArgumentNullException(nameof(input));
-
-            Cursor = new AnsiConsoleCursor(this);
-            Output = new AnsiConsoleOutput(standardOutput, capabilities);
-        }
-    }
-
-    internal class Mist
-    {
-        public void Write(IRenderable renderable)
-        {
-            var builder = new StringBuilder();
-
-            foreach (var segment in _console.GetSegments(renderable))
-            {
-                if (segment.IsControlCode)
-                {
-                    builder.Append(segment.Text);
-                    continue;
-                }
-
-                var parts = segment.Text.NormalizeNewLines().Split(new[] { '\n' });
-                foreach (var (_, _, last, part) in parts.Enumerate())
-                {
-                    if (!string.IsNullOrEmpty(part))
-                    {
-                        builder.Append(_builder.GetAnsi(part, segment.Style));
-                    }
-
-                    if (!last)
-                    {
-                        builder.Append(Environment.NewLine);
-                    }
-                }
-            }
-
-            if (builder.Length > 0)
-            {
-                _console.Output.StandardOutput.Write(builder.ToString());
-                _console.Output.StandardOutput.Flush();
-            }
-        }
+        /// <summary>
+        /// Gets or sets the exclusivity mode.
+        /// </summary>
+        public IExclusivityMode? ExclusivityMode { get; set; }
     }
 
     /// <summary>
-    /// Represents the output mechanism of a legacy console.
+    /// A backend console.
     /// </summary>
-    /// <remarks>
-    /// The implementation is internally backed by System.Console.
-    /// </remarks>
-    public class LegacyConsoleOutput : IConsoleOutput
+    public class CustomBackendConsole : IConsole
     {
-        private readonly ColorSystem _colorSystem;
+        /// <summary>
+        /// Initializes a new instance of the <see cref="CustomBackendConsole"/> class.
+        /// </summary>
+        /// <param name="capabilities">.</param>
+        /// <param name="cursor">.</param>
+        /// <param name="output">.</param>
+        /// <param name="input">.</param>
+        /// <param name="window">.</param>
+        public CustomBackendConsole(
+            ICapabilities capabilities,
+            IConsoleCursor cursor,
+            IConsoleOutput output,
+            IConsoleInput input,
+            IConsoleWindow window)
+        {
+            Capabilities = capabilities ?? throw new ArgumentNullException(nameof(capabilities));
+            Cursor = cursor ?? throw new ArgumentNullException(nameof(cursor));
+            Output = output ?? throw new ArgumentNullException(nameof(output));
+            Input = input ?? throw new ArgumentNullException(nameof(input));
+            Window = window ?? throw new ArgumentNullException(nameof(window));
+        }
 
-        private Style _lastStyle = Style.Plain;
+        /// <inheritdoc />
+        public ICapabilities Capabilities { get; }
+
+        /// <inheritdoc />
+        public IConsoleCursor Cursor { get; }
+
+        /// <inheritdoc />
+        public IConsoleOutput Output { get; }
+
+        /// <inheritdoc />
+        public IConsoleInput Input { get; }
+
+        /// <inheritdoc />
+        public IConsoleWindow Window { get; }
+    }
+
+    /// <summary>
+    /// Console Facade.
+    /// </summary>
+    public class ConsoleFacade : IAnsiConsole
+    {
+        /// <summary>
+        /// Initializes a new instance of the <see cref="ConsoleFacade"/> class.
+        /// </summary>
+        /// <param name="console">The backing console.</param>
+        public ConsoleFacade(IConsole console)
+        {
+            BackingConsole = console ?? throw new ArgumentNullException(nameof(console));
+        }
+
+        /// <inheritdoc />
+        public virtual ICapabilities Capabilities => BackingConsole.Capabilities;
+
+        /// <inheritdoc />
+        public virtual IConsoleCursor Cursor => BackingConsole.Cursor;
+
+        /// <inheritdoc />
+        public virtual IConsoleOutput Output => BackingConsole.Output;
+
+        /// <inheritdoc />
+        public virtual IConsoleInput Input => BackingConsole.Input;
+
+        /// <inheritdoc />
+        public virtual IConsoleWindow Window => BackingConsole.Window;
+
+        /// <inheritdoc />
+        public virtual IExclusivityMode ExclusivityMode { get; } = new DefaultExclusivityMode();
+
+        /// <inheritdoc />
+        public virtual RenderPipeline Pipeline { get; } = new();
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="LegacyConsoleOutput"/> class.
+        /// Gets the underlying console.
         /// </summary>
-        /// <param name="colorSystem">The consoles color system.</param>
-        public LegacyConsoleOutput(ColorSystem colorSystem)
+        protected IConsole BackingConsole { get; }
+
+        /// <inheritdoc />
+        public virtual void Clear(bool home)
         {
-            _colorSystem = colorSystem;
+            Output.Clear(home);
         }
 
         /// <inheritdoc />
-        public void Clear(bool home)
+        public virtual void Write(IRenderable renderable)
         {
-            var (x, y) = (System.Console.CursorLeft, System.Console.CursorTop);
-
-            System.Console.Clear();
-
-            if (!home)
-            {
-                // Set the cursor position
-                System.Console.SetCursorPosition(x, y);
-            }
-        }
-
-        /// <inheritdoc />
-        public void Flush()
-        {
-            System.Console.Out.Flush();
-        }
-
-        /// <inheritdoc />
-        public void Write(Segment segment)
-        {
-            if (segment.IsControlCode)
-            {
-                return;
-            }
-
-            if (!_lastStyle.Equals(segment.Style))
-            {
-                SetStyle(segment.Style);
-            }
-
-            System.Console.Out.Write(segment.Text.NormalizeNewLines(native: true));
-        }
-
-        private void SetStyle(Style style)
-        {
-            _lastStyle = style;
-
-            System.Console.ResetColor();
-
-            var background = Color.ToConsoleColor(style.Background);
-            if (_colorSystem != ColorSystem.NoColors && (int)background != -1)
-            {
-                System.Console.BackgroundColor = background;
-            }
-
-            var foreground = Color.ToConsoleColor(style.Foreground);
-            if (_colorSystem != ColorSystem.NoColors && (int)foreground != -1)
-            {
-                System.Console.ForegroundColor = foreground;
-            }
+            this.GetSegments(renderable).ForEach(segment => Output.Write(segment));
+            Output.Flush();
         }
     }
 
     /// <summary>
     /// Represents a console window without a backend.
     /// </summary>
-    public class ConsoleWindow : IConsoleWindow
+    public class DummyWindow : IConsoleWindow
     {
         /// <inheritdoc />
         public string Title { get; set; } = string.Empty;
@@ -206,11 +186,10 @@ namespace Spectre.Console
     }
 
     /// <summary>
-    /// Represents the output part of an <see cref="AnsiConsoleBackend"/>.
+    /// Represents the ANSI output part of an <see cref="IConsole"/>.
     /// </summary>
     public class AnsiConsoleOutput : IConsoleOutput
     {
-        private readonly TextWriter _standardOutput;
         private readonly AnsiBuilder _builder;
 
         /// <summary>
@@ -220,36 +199,41 @@ namespace Spectre.Console
         /// <param name="capabilities">The console capabilities.</param>
         public AnsiConsoleOutput(TextWriter standardOutput, ICapabilities capabilities)
         {
-            _standardOutput = standardOutput ?? throw new ArgumentNullException(nameof(standardOutput));
             _builder = new AnsiBuilder(capabilities);
+            StandardOutput = standardOutput ?? throw new ArgumentNullException(nameof(standardOutput));
         }
 
+        /// <summary>
+        /// Gets the console output text writer.
+        /// </summary>
+        protected TextWriter StandardOutput { get; }
+
         /// <inheritdoc />
-        public void Clear(bool home)
+        public virtual void Clear(bool home)
         {
-            _standardOutput.Write(ED(2));
-            _standardOutput.Write(ED(3));
+            Write(Segment.Control(ED(2)));
+            Write(Segment.Control(ED(3)));
 
             if (home)
             {
-                _standardOutput.Write(CUP(1, 1));
+                Write(Segment.Control(CUP(1, 1)));
             }
 
-            _standardOutput.Flush();
+            Flush();
         }
 
         /// <inheritdoc />
-        public void Flush()
+        public virtual void Flush()
         {
-            _standardOutput.Flush();
+            StandardOutput.Flush();
         }
 
         /// <inheritdoc />
-        public void Write(Segment segment)
+        public virtual void Write(Segment segment)
         {
             if (segment.IsControlCode)
             {
-                _standardOutput.Write(segment.Text);
+                StandardOutput.Write(segment.Text);
                 return;
             }
 
@@ -258,12 +242,12 @@ namespace Spectre.Console
             {
                 if (!string.IsNullOrEmpty(part))
                 {
-                    _standardOutput.Write(_builder.GetAnsi(part, segment.Style));
+                    StandardOutput.Write(_builder.GetAnsi(part, segment.Style));
                 }
 
                 if (!last)
                 {
-                    _standardOutput.Write(Environment.NewLine);
+                    StandardOutput.Write(Environment.NewLine);
                 }
             }
         }

@@ -1,7 +1,7 @@
 ﻿namespace Spectre.Console
 {
     /// <summary>
-    /// Represents the capabilites of an <see cref="IConsoleBackend"/>.
+    /// Represents the capabilites of an <see cref="IConsole"/>.
     /// </summary>
     public interface ICapabilities
     {

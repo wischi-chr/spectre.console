@@ -16,7 +16,7 @@ namespace Spectre.Console.Internal
 
             foreach (var renderable in renderables)
             {
-                var segments = renderable.Render(context, console.Profile.Width);
+                var segments = renderable.Render(context, console.Window.Width);
                 foreach (var (_, first, _, segment) in segments.Enumerate())
                 {
                     if (segment.IsControlCode)

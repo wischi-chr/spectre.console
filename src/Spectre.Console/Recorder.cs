@@ -8,16 +8,10 @@ namespace Spectre.Console
     /// <summary>
     /// A console recorder used to record output from a console.
     /// </summary>
-    public class Recorder : IAnsiConsole, IDisposable
+    public sealed class Recorder : IAnsiConsole, IDisposable
     {
         private readonly IAnsiConsole _console;
         private readonly List<IRenderable> _recorded;
-
-        /// <inheritdoc/>
-        public IProfile Profile => _console.Profile;
-
-        /// <inheritdoc/>
-        public IAnsiConsoleCursor Cursor => _console.Cursor;
 
         /// <inheritdoc/>
         public IConsoleInput Input => _console.Input;
@@ -27,6 +21,18 @@ namespace Spectre.Console
 
         /// <inheritdoc/>
         public RenderPipeline Pipeline => _console.Pipeline;
+
+        /// <inheritdoc/>
+        public ICapabilities Capabilities => _console.Capabilities;
+
+        /// <inheritdoc/>
+        public IConsoleCursor Cursor => _console.Cursor;
+
+        /// <inheritdoc/>
+        public IConsoleOutput Output => _console.Output;
+
+        /// <inheritdoc/>
+        public IConsoleWindow Window => _console.Window;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="Recorder"/> class.
@@ -60,7 +66,6 @@ namespace Spectre.Console
             }
 
             _recorded.Add(renderable);
-
             _console.Write(renderable);
         }
 

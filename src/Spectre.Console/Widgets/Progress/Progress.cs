@@ -157,7 +157,7 @@ namespace Spectre.Console
 
         private ProgressRenderer CreateRenderer()
         {
-            var caps = _console.Profile.Capabilities;
+            var caps = _console.Capabilities;
             var interactive = caps.Interactive && caps.Ansi;
 
             if (interactive)

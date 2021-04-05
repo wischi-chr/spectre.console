@@ -1,6 +1,6 @@
 namespace Spectre.Console
 {
-    internal sealed class LegacyConsoleCursor : IConsoleCursor
+    internal sealed class SystemConsoleCursor : IConsoleCursor
     {
         public void Show(bool show)
         {

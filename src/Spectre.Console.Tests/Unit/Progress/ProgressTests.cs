@@ -15,7 +15,7 @@ namespace Spectre.Console.Tests.Unit
         public void Should_Render_Task_Correctly()
         {
             // Given
-            var console = new FakeAnsiConsole(ColorSystem.TrueColor, width: 10);
+            var console = FakeConsole.Create(ColorSystem.TrueColor, width: 10);
 
             var progress = new Progress(console)
                 .Columns(new[] { new ProgressBarColumn() })
@@ -40,7 +40,7 @@ namespace Spectre.Console.Tests.Unit
         public void Should_Not_Auto_Clear_If_Specified()
         {
             // Given
-            var console = new FakeAnsiConsole(ColorSystem.TrueColor, width: 10);
+            var console = FakeConsole.Create(ColorSystem.TrueColor, width: 10);
 
             var progress = new Progress(console)
                 .Columns(new[] { new ProgressBarColumn() })
@@ -66,7 +66,7 @@ namespace Spectre.Console.Tests.Unit
         public Task Should_Reduce_Width_If_Needed()
         {
             // Given
-            var console = new FakeConsole(width: 20);
+            var console = FakeConsole.Create(width: 20);
 
             var progress = new Progress(console)
                 .Columns(new ProgressColumn[]
@@ -97,7 +97,7 @@ namespace Spectre.Console.Tests.Unit
         {
             // Given
             var task = default(ProgressTask);
-            var console = new FakeConsole();
+            var console = FakeConsole.Create();
             var progress = new Progress(console)
                 .Columns(new[] { new ProgressBarColumn() })
                 .AutoRefresh(false)
@@ -121,7 +121,7 @@ namespace Spectre.Console.Tests.Unit
         {
             // Given
             var task = default(ProgressTask);
-            var console = new FakeConsole();
+            var console = FakeConsole.Create();
             var progress = new Progress(console)
                 .Columns(new[] { new ProgressBarColumn() })
                 .AutoRefresh(false)
@@ -145,7 +145,7 @@ namespace Spectre.Console.Tests.Unit
         {
             // Given
             var task = default(ProgressTask);
-            var console = new FakeConsole();
+            var console = FakeConsole.Create();
             var progress = new Progress(console)
                 .Columns(new[] { new ProgressBarColumn() })
                 .AutoRefresh(false)
@@ -167,7 +167,7 @@ namespace Spectre.Console.Tests.Unit
         {
             // Given
             var task = default(ProgressTask);
-            var console = new FakeConsole();
+            var console = FakeConsole.Create();
             var progress = new Progress(console)
                 .Columns(new[] { new ProgressBarColumn() })
                 .AutoRefresh(false)
@@ -192,7 +192,7 @@ namespace Spectre.Console.Tests.Unit
             var taskFinished = default(ProgressTask);
             var taskInProgress1 = default(ProgressTask);
             var taskInProgress2 = default(ProgressTask);
-            var console = new FakeAnsiConsole(ColorSystem.TrueColor, width: 10);
+            var console = FakeConsole.Create(ColorSystem.TrueColor, width: 10);
 
             var progress = new Progress(console)
                 .Columns(new[] { new ProgressBarColumn() })

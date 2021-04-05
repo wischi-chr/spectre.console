@@ -54,14 +54,14 @@ namespace Spectre.Console
         /// <inheritdoc/>
         T IPrompt<T>.Show(IAnsiConsole console)
         {
-            if (!console.Profile.Capabilities.Interactive)
+            if (!console.Capabilities.Interactive)
             {
                 throw new NotSupportedException(
                     "Cannot show selection prompt since the current " +
                     "terminal isn't interactive.");
             }
 
-            if (!console.Profile.Capabilities.Ansi)
+            if (!console.Capabilities.Ansi)
             {
                 throw new NotSupportedException(
                     "Cannot show selection prompt since the current " +
