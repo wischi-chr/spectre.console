@@ -1,11 +1,9 @@
 using System;
 using System.Collections.Generic;
-using System.Linq;
 
 namespace Spectre.Console.Enrichment
 {
     internal static class CapabilitiesEnricher
-
     {
         private static readonly List<ICapabilitiesEnricher> _defaultEnrichers = new()
         {
@@ -27,7 +25,7 @@ namespace Spectre.Console.Enrichment
         public static void Enrich(
             Capabilities capabilities,
             CapabilitiesEnrichment settings,
-            IDictionary<string, string>? environmentVariables)
+            IDictionary<string, string> variables)
         {
             if (capabilities is null)
             {
@@ -36,7 +34,6 @@ namespace Spectre.Console.Enrichment
 
             settings ??= new CapabilitiesEnrichment();
 
-            var variables = GetEnvironmentVariables(environmentVariables);
             foreach (var enricher in GetEnrichers(settings))
             {
                 if (string.IsNullOrWhiteSpace(enricher.Name))
@@ -69,30 +66,6 @@ namespace Spectre.Console.Enrichment
             }
 
             return enrichers;
-        }
-
-        private static IDictionary<string, string> GetEnvironmentVariables(IDictionary<string, string>? variables)
-        {
-            if (variables != null)
-            {
-                return new Dictionary<string, string>(variables, StringComparer.OrdinalIgnoreCase);
-            }
-
-            return Environment.GetEnvironmentVariables()
-                .Cast<System.Collections.DictionaryEntry>()
-                .Aggregate(
-                    new Dictionary<string, string>(StringComparer.OrdinalIgnoreCase),
-                    (dictionary, entry) =>
-                    {
-                        var key = (string)entry.Key;
-                        if (!dictionary.TryGetValue(key, out _))
-                        {
-                            dictionary.Add(key, entry.Value as string ?? string.Empty);
-                        }
-
-                        return dictionary;
-                    },
-                    dictionary => dictionary);
         }
     }
 }
