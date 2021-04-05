@@ -11,9 +11,11 @@ using System.Text.RegularExpressions;
 
 namespace Spectre.Console
 {
+    internal record AnsiDetectionResult(bool SupportsAnsi, bool LegacyConsole);
+
     internal static class AnsiDetector
     {
-        private static readonly Regex[] _regexes = new[]
+        private static readonly Regex[] _ansiTerminalPatterns = new[]
         {
             new Regex("^xterm"), // xterm, PuTTY, Mintty
             new Regex("^rxvt"), // RXVT
@@ -32,16 +34,17 @@ namespace Spectre.Console
             new Regex("bvterm"), // Bitvise SSH Client
         };
 
-        public static (bool SupportsAnsi, bool LegacyConsole) Detect(bool upgrade)
+        public static AnsiDetectionResult Detect(bool upgrade)
         {
             // Running on Windows?
             if (RuntimeInformation.IsOSPlatform(OSPlatform.Windows))
             {
                 // Running under ConEmu?
                 var conEmu = Environment.GetEnvironmentVariable("ConEmuANSI");
-                if (!string.IsNullOrEmpty(conEmu) && conEmu.Equals("On", StringComparison.OrdinalIgnoreCase))
+
+                if (conEmu?.Equals("On", StringComparison.OrdinalIgnoreCase) ?? false)
                 {
-                    return (true, false);
+                    return new(SupportsAnsi: true, LegacyConsole: false);
                 }
 
                 return Windows.SupportsAnsi(upgrade);
@@ -50,19 +53,12 @@ namespace Spectre.Console
             return DetectFromTerm();
         }
 
-        private static (bool SupportsAnsi, bool LegacyConsole) DetectFromTerm()
+        private static AnsiDetectionResult DetectFromTerm()
         {
             // Check if the terminal is of type ANSI/VT100/xterm compatible.
             var term = Environment.GetEnvironmentVariable("TERM");
-            if (!string.IsNullOrWhiteSpace(term))
-            {
-                if (_regexes.Any(regex => regex.IsMatch(term)))
-                {
-                    return (true, false);
-                }
-            }
-
-            return (false, true);
+            var supportsAnsi = _ansiTerminalPatterns?.Any(regex => regex.IsMatch(term)) ?? false;
+            return new(SupportsAnsi: supportsAnsi, LegacyConsole: !supportsAnsi);
         }
 
         internal static class Windows
@@ -91,13 +87,13 @@ namespace Spectre.Console
             [DllImport("kernel32.dll")]
             public static extern uint GetLastError();
 
-            public static (bool SupportsAnsi, bool LegacyConsole) SupportsAnsi(bool upgrade)
+            public static AnsiDetectionResult SupportsAnsi(bool upgrade)
             {
                 if (!upgrade)
                 {
                     // Only test standard output. We assume standard error is the same.
                     var supportsAnsi = SupportsAnsi(false, false, out var legacyConsole);
-                    return (supportsAnsi, legacyConsole);
+                    return new(supportsAnsi, legacyConsole);
                 }
                 else
                 {
@@ -107,20 +103,20 @@ namespace Spectre.Console
 
                     if (!supportsAnsi)
                     {
-                        return (supportsAnsi, legacyConsole);
+                        return new(supportsAnsi, legacyConsole);
                     }
 
                     // if it succeeded we also upgrade standard error and assume it works as well.
                     SupportsAnsi(true, true, out _);
 
-                    return (supportsAnsi, legacyConsole);
+                    return new(supportsAnsi, legacyConsole);
                 }
             }
 
             private static bool SupportsAnsi(bool upgrade, bool stdError, out bool isLegacy)
             {
                 isLegacy = false;
-
+                // TODO: Remember take into account upgraded terminals
                 try
                 {
                     var @out = GetStdHandle(stdError ? STD_ERROR_HANDLE : STD_OUTPUT_HANDLE);
